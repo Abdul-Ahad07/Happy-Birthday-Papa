@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Papa ✨ - From Musa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef9c3 100%);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #78350f;
+        }
+
+        /* --- 1. Lock Screen (Password: 0810) --- */
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(254, 243, 199, 0.98);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; transition: opacity 0.8s ease;
+        }
+        .lock-card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
+            text-align: center;
+            max-width: 360px;
+            width: 85%;
+            border: 2px solid #f59e0b;
+        }
+        .lock-card h2 { font-size: 20px; color: #d97706; margin-bottom: 8px; font-weight: 700; }
+        .lock-card p { font-size: 13px; color: #b45309; margin-bottom: 20px; }
+        .pass-input {
+            width: 100%; padding: 12px; font-size: 20px; text-align: center;
+            letter-spacing: 8px; border: 2px solid #fde68a; border-radius: 15px;
+            outline: none; margin-bottom: 15px; color: #d97706; background: #fffbeb;
+        }
+        .pass-input:focus { border-color: #d97706; }
+        .error-msg { color: #e11d48; font-size: 13px; margin-bottom: 10px; display: none; }
+
+        /* --- 2. Start Screen --- */
+        #start-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(254, 243, 199, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 999; transition: opacity 0.8s ease; opacity: 0; pointer-events: none;
+        }
+        #start-screen.active { opacity: 1; pointer-events: auto; }
+
+        .start-card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
+            text-align: center;
+            max-width: 400px;
+            width: 88%;
+            border: 2px solid #f59e0b;
+        }
+        .start-card h2 { font-size: 22px; color: #d97706; margin-bottom: 12px; font-weight: 700; }
+        .start-card p { font-size: 15px; color: #b45309; margin-bottom: 25px; }
+
+        .btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none;
+            padding: 12px 30px; border-radius: 25px; font-size: 16px; font-weight: 700;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4);
+            transition: transform 0.2s ease; width: 100%;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* --- 3. Main Sequence Card --- */
+        #main-content {
+            opacity: 0; pointer-events: none; transition: opacity 1.2s ease;
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            text-align: center; position: relative;
+        }
+        #main-content.active { opacity: 1; pointer-events: auto; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 40px 20px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px rgba(217, 119, 6, 0.2);
+            width: 90%; max-width: 650px; min-height: 150px;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        #text-box {
+            font-size: 26px;
+            color: #b45309;
+            font-weight: 800;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+        #text-box.visible { opacity: 1; }
+
+        /* --- 4. Perfectly Centered SVG Heart --- */
+        #heart-wrapper {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: none; justify-content: center; align-items: center;
+            z-index: 50;
+        }
+
+        .heart-box {
+            position: relative;
+            width: 85vw;
+            max-width: 360px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 1.6s infinite alternate ease-in-out;
+        }
+
+        .heart-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 15px 30px rgba(245, 158, 11, 0.35));
+        }
+
+        .heart-text {
+            position: absolute;
+            top: 44%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 78%;
+            color: #ffffff;
+            font-size: 19px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.4;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            word-wrap: break-word;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Floating Elements */
+        .floating {
+            position: absolute; top: -10vh;
+            font-size: 24px; opacity: 0.85;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .heart-text { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lock Screen -->
+    <div id="lock-screen">
+        <div class="lock-card">
+            <h2>🔒 Special Gift for Papa</h2>
+            <p>Enter passcode to unlock (05/11)</p>
+            <input type="password" id="pass-input" class="pass-input" maxlength="5" placeholder="*****">
+            <div id="error-msg" class="error-msg">Incorrect Passcode!</div>
+            <button class="btn" onclick="checkLock()">Unlock 🔑</button>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <div class="start-card">
+            <h2>Happy Birthday Papa! 🎂✨</h2>
+            <p>A heartfelt message from Musa...</p>
+            <button class="btn" onclick="openWish()">Open Surprise 🎁</button>
+        </div>
+    </div>
+
+    <!-- Main Content Screen -->
+    <div id="main-content">
+        <audio id="bg-music" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73180.mp3" preload="auto" loop></audio>
+        <div id="floating-container"></div>
+        
+        <div class="card" id="main-card">
+            <div id="text-box"></div>
+        </div>
+
+        <div id="heart-wrapper">
+            <div class="heart-box">
+                <svg viewBox="0 0 24 24" class="heart-svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#f59e0b"/>
+                </svg>
+                <div class="heart-text" id="heart-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkLock() {
+            const input = document.getElementById('pass-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            if (input === '05/11') {
+                document.getElementById('lock-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('start-screen').classList.add('active');
+                }, 800);
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('pass-input').value = '';
+            }
+        }
+
+        const lines = [
+            "Happy Birthday to my dearest Papa! 🎂✨",
+            "May Allah bless you with good health and long life. 🤲🏻❤️",
+            "Thank you for everything you do for us. 🌸",
+            "You are my biggest strength and hero. 🌟",
+            "May your days always be filled with happiness. 🫶🏻",
+            "Wishing you endless peace and joy today. 🧸",
+            "I am so proud to be your son, Papa. 💛",
+            "May all your dreams and prayers come true. 🤲🏻",
+            "Always keep smiling like this. ✨",
+            "Happiest 5th November Birthday, Papa! From Musa 🎉💐"
+        ];
+
+        function openWish() {
+            document.getElementById('start-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('start-screen').style.display = 'none', 800);
+            document.getElementById('main-content').classList.add('active');
+            
+            const music = document.getElementById('bg-music');
+            if(music) music.play().catch(e => console.log(e));
+
+            createElements();
+            showAnimation();
+        }
+
+        function createElements() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🎈', '✨', '🌸', '🎂', '⭐', '🫶🏻', '💛'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('floating');
+                el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                container.appendChild(el);
+                setTimeout(() => el.remove(), 8000);
+            }, 600);
+        }
+
+        let index = 0;
+        function showAnimation() {
+            const textBox = document.getElementById('text-box');
+            const mainCard = document.getElementById('main-card');
+            const heartWrapper = document.getElementById('heart-wrapper');
+            const heartText = document.getElementById('heart-text');
+
+            function nextLine() {
+                if (index < lines.length) {
+                    if (index === lines.length - 1) {
+                        mainCard.style.display = 'none';
+                        heartWrapper.style.display = 'flex';
+                        heartText.innerText = lines[index];
+                        return;
+                    }
+
+                    textBox.innerText = lines[index];
+                    
+                    let fontSize = window.innerWidth < 500 ? 18 : 28;
+                    textBox.style.fontSize = fontSize + 'px';
+                    
+                    while (textBox.scrollWidth > textBox.clientWidth && fontSize > 10) {
+                        fontSize--;
+                        textBox.style.fontSize = fontSize + 'px';
+                    }
+
+                    textBox.classList.add('visible');
+
+                    setTimeout(() => {
+                        textBox.classList.remove('visible');
+                        setTimeout(() => { index++; nextLine(); }, 1000);
+                    }, 3400);
+                }
+            }
+            nextLine();
+        }
+    </script>
+</body>
+</html>
